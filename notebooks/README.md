@@ -66,157 +66,196 @@ CREDIT-CARD-ML-DEPLOYMENT/
 
 ## Локальный запуск
 
-### Установказависимостей
+### 1. Установка зависимостей
 
+```bash
 python -m venv .venv
-# Windows PowerShell
+```
+
+Windows PowerShell:
+```powershell
 .\.venv\Scripts\activate
-# Установка зависимостей
 pip install -r requirements.txt
-Запуск API
-bash
+```
+
+2. Обучение модели
+
+```bash
+jupyter notebook models/train-1.ipynb
+```
+
+3. Запуск API
+```bash
 python app/api.py
+```
 Сервис будет доступен по адресу:
+```text
 http://localhost:5000
-API GET /health
+```
+## API
+### GET /health
 Проверка состояния сервиса и загрузки модели.
 
 Пример запроса:
-powershell
+```powershell
 Invoke-RestMethod -Uri http://localhost:5000/health -Method GET | ConvertTo-Json
+```
 Пример ответа:
-json
+```json
 {
-    "healthy": true,
-    "model_version": "v2",
-    "status": "ok"
+  "healthy": true,
+  "model_version": "v2",
+  "status": "ok"
 }
-POST /predict
+```
+
+### POST /predict
+
 Принимает JSON с признаками клиента и возвращает:
-prediction — предсказанный класс (0/1);
-probability — вероятность дефолта;
-model_version — версия модели;
-message — текстовое описание риска.
+`prediction` — предсказанный класс (0/1);
+`probability` — вероятность дефолта;
+`model_version` — версия модели;
+`message` — текстовое описание риска.
 
 Пример запроса:
-powershell
-Invoke-RestMethod -Uri http://localhost:5000/predict `
+```powershell
+Invoke-RestMethod `
+  -Uri http://localhost:5000/predict `
   -Method POST `
   -ContentType "application/json" `
   -Body '{"features": [0, 0, 0, 0, 0.05, 0.2, 0, 35, 140000]}' `
-| ConvertTo-Json
+  ConvertTo-Json
+```
 Пример ответа:
-json
+```json
 {
-    "prediction": 0,
-    "probability": 0.1472,
-    "model_version": "v2",
-    "message": "Low risk of default"
+  "prediction": 0,
+  "probability": 0.1472,
+  "model_version": "v2",
+  "message": "Low risk of default"
 }
-GET /model/info
+```
+### GET /model/info
 Информация о загруженной модели.
 
 Пример запроса:
-powershell
+```powershell
 Invoke-RestMethod -Uri http://localhost:5000/model/info -Method GET | ConvertTo-Json
 Пример ответа:
 
 json
 {
-    "features_count": 9,
-    "is_loaded": true,
-    "model_type": "RandomForestClassifier",
-    "model_version": "v2"
+  "features_count": 9,
+  "is_loaded": true,
+  "model_type": "RandomForestClassifier",
+  "model_version": "v2"
 }
-Тесты
+```
+## Тесты
 Запуск тестов API:
-bash
+```bash
 python tests/test_api.py
+```
 Результат: 5/5 тестов пройдено
 
-Docker
-Сборка образа
-bash
+## Docker
+### Сборка образа
+```bash
 docker build -f docker/Dockerfile -t credit_default_model:latest .
-Запуск контейнера
-bash
+```
+### Запуск контейнера
+```bash
 docker run --rm -p 5000:5000 credit_default_model:latest
-Docker Compose
+```
+## Docker Compose
 Запуск:
-
-bash
+``bash
 docker-compose up --build
+```
 Остановка:
-
-bash
+```bash
 docker-compose down
-Docker Hub
+```
+##  Docker Hub
 Ссылка на опубликованный Docker-образ:
+Docker Hub: https://hub.docker.com/r/3067094mu/credit_default_model
+sha256:419f7d348067a9cc296a80f395bfe263772caf2196c33f331dd6565005014ebc
 
-https://hub.docker.com/r/3067094mu/credit_default_model
-Скачивание и запуск:
+##  Скачивание и запуск:
 
-bash
+```bash
 docker pull 3067094mu/credit_default_model:latest
 docker run -d -p 5000:5000 3067094mu/credit_default_model:latest
+```
+
 Демонстрация
-Скриншот работы API
+Скриншот работы API:
 https://healthpredict.JPG
 
 Результаты:
-
 GET /health → сервис работает, модель v2 загружена
+
 POST /predict → получен корректный прогноз
 
 Архитектура: монолит vs микросервисы
 В рамках данного учебного проекта выбран монолитный подход.
-
 Причины:
-- минимальная сложность для MVP;
-- быстрее разработка и деплой;
-- меньше операционных накладных расходов;
-- достаточно для одного ML use-case.
-- Переход к микросервисной архитектуре будет оправдан при росте нагрузки, появлении нескольких моделей, разных SLA и необходимости независимого масштабирования компонентов.
+
+минимальная сложность для MVP;
+
+быстрее разработка и деплой;
+
+меньше операционных накладных расходов;
+
+достаточно для одного ML use-case.
+
+Переход к микросервисной архитектуре будет оправдан при росте нагрузки, появлении нескольких моделей, разных SLA и необходимости независимого масштабирования компонентов.
 
 Логирование, мониторинг и MLOps-концепты
 RabbitMQ (концепт)
 В production-сценарии RabbitMQ можно использовать для:
-- асинхронного batch scoring;
-- retraining jobs;
-- логирования и доставки событий в очередь.
+
+асинхронного batch scoring;
+
+retraining jobs;
+
+логирования и доставки событий в очередь.
 
 Логирование
 API-запросы логируются в logs/api_logs.json в JSON-формате:
 
 json
 {
-    "timestamp": "2026-05-04T10:30:00",
-    "features": [0, 0, 0, 0, 0.05, 0.2, 0, 35, 140000],
-    "prediction": 0,
-    "probability": 0.1472,
-    "status": "success",
-    "model_version": "v2"
+  "timestamp": "2026-05-04T10:30:00",
+  "features": [0, 0, 0, 0, 0.05, 0.2, 0, 35, 140000],
+  "prediction": 0,
+  "probability": 0.1472,
+  "status": "success",
+  "model_version": "v2"
 }
 В production такие логи могут централизованно собираться через ELK / OpenSearch / Grafana stack.
 
 DVC (концепт)
-- DVC используется для контроля версий данных и ML-артефактов, а также для воспроизводимости пайплайна.
+DVC используется для контроля версий данных и ML-артефактов, а также для воспроизводимости пайплайна.
 
 MLflow (концепт)
-- MLflow используется для трекинга экспериментов, хранения метрик, параметров и артефактов моделей.
+MLflow используется для трекинга экспериментов, хранения метрик, параметров и артефактов моделей.
 
 ONNX-ML, uWSGI и NGINX (концепты)
-- ONNX-ML Модель scikit-learn можно преобразовать в ONNX-формат для ускоренного инференса и более удобного кросс-платформенного развёртывания.
-- uWSGI + NGINX
+ONNX-ML
+Модель scikit-learn можно преобразовать в ONNX-формат для ускоренного инференса и более удобного кросс-платформенного развёртывания.
+
+uWSGI + NGINX
 В production среде:
-- uWSGI / Gunicorn выступает как WSGI-сервер для Python-приложения;
-- NGINX работает как reverse proxy, распределяет запросы, обрабатывает TLS, статику и балансировку нагрузки.
+
+uWSGI / Gunicorn выступает как WSGI-сервер для Python-приложения;
+
+NGINX работает как reverse proxy, распределяет запросы, обрабатывает TLS, статику и балансировку нагрузки.
 
 Бизнес-метрики
 Помимо технических метрик (F1-score, Precision, Recall) используются бизнес-метрики:
-- Expected loss reduction — ожидаемое снижение потерь от дефолтов
-- Approval rate at fixed risk — доля одобренных заявок при фиксированном уровне риска
 
+Expected loss reduction — ожидаемое снижение потерь от дефолтов;
 
-Docker Hub: https://hub.docker.com/r/3067094mu/credit_default_model
-sha256:419f7d348067a9cc296a80f395bfe263772caf2196c33f331dd6565005014ebc
+Approval rate at fixed risk — доля одобренных заявок при фиксированном уровне риска.
+
