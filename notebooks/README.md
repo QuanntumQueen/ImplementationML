@@ -15,18 +15,10 @@ Production-like минималистичный сервис для прогно�
 
 
 ## Структура проекта
+
+```text
 CREDIT-CARD-ML-DEPLOYMENT/
-├── .venv/
-│ ├── Include/
-│ ├── Lib/
-│ ├── Scripts/
-│ └── share/
-│ ├── .gitignore
-│ └── pyvenv.cfg
-├── .vscode/
-│ └── settings.json
 ├── app/
-│ ├── pycache/
 │ ├── init.py
 │ ├── api.py
 │ └── model_handler.py
@@ -54,7 +46,7 @@ CREDIT-CARD-ML-DEPLOYMENT/
 ├── docker-compose.yml
 ├── healthpredict.JPG
 └── requirements.txt
-
+```
 
 ##  Модель
 Используется модель **RandomForestClassifier** для задачи бинарной классификации: предсказание дефолта клиента по кредитной карте.
@@ -67,18 +59,15 @@ CREDIT-CARD-ML-DEPLOYMENT/
 | **v2** | 9 признаков + feature engineering | `class_weight='balanced'` | 0.5310 | 0.5607 |
 
 ### Feature Engineering (новые признаки)
-- `DELAY_COUNT` — количество просрочек за 6 месяцев
-- `PAYMENT_RATIO` — платёж / лимит
-- `BILL_TO_LIMIT` — долг / лимит
-- `ZERO_PAYMENT_COUNT` — сколько месяцев не платил
-
-
+- `DELAY_COUNT` — сколько месяцев была просрочка у клиента
+- `PAYMENT_RATIO` —  PAYMENT_RATIO — платёж / лимит -какую часть лимита клиент платит
+- `BILL_TO_LIMIT` — долг / лимит -какую часть лимита должен
+- `ZERO_PAYMENT_COUNT` — сколько месяцев не платил клиет
 
 ## Локальный запуск
 
-### Установка зависимостей
+### Установказависимостей
 
-```bash
 python -m venv .venv
 # Windows PowerShell
 .\.venv\Scripts\activate
@@ -170,7 +159,7 @@ https://hub.docker.com/r/3067094mu/credit_default_model
 bash
 docker pull 3067094mu/credit_default_model:latest
 docker run -d -p 5000:5000 3067094mu/credit_default_model:latest
-📸 Демонстрация
+Демонстрация
 Скриншот работы API
 https://healthpredict.JPG
 
@@ -227,7 +216,6 @@ ONNX-ML, uWSGI и NGINX (концепты)
 Помимо технических метрик (F1-score, Precision, Recall) используются бизнес-метрики:
 - Expected loss reduction — ожидаемое снижение потерь от дефолтов
 - Approval rate at fixed risk — доля одобренных заявок при фиксированном уровне риска
-
 
 
 Docker Hub: https://hub.docker.com/r/3067094mu/credit_default_model
