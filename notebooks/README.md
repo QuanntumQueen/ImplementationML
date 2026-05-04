@@ -19,7 +19,7 @@ Production-like минималистичный сервис для прогно�
 ```text
 CREDIT-CARD-ML-DEPLOYMENT/
 ├── app/
-│ ├── init.py
+│ ├── __ini__t.py
 │ ├── api.py
 │ └── model_handler.py
 ├── data/
@@ -62,7 +62,7 @@ CREDIT-CARD-ML-DEPLOYMENT/
 - `DELAY_COUNT` — сколько месяцев была просрочка у клиента
 - `PAYMENT_RATIO` —  PAYMENT_RATIO — платёж / лимит -какую часть лимита клиент платит
 - `BILL_TO_LIMIT` — долг / лимит -какую часть лимита должен
-- `ZERO_PAYMENT_COUNT` — сколько месяцев не платил клиет
+- `ZERO_PAYMENT_COUNT` — сколько месяцев не платил клиент
 
 ## Локальный запуск
 
@@ -142,8 +142,7 @@ Invoke-RestMethod `
 ```powershell
 Invoke-RestMethod -Uri http://localhost:5000/model/info -Method GET | ConvertTo-Json
 Пример ответа:
-
-json
+```json
 {
   "features_count": 9,
   "is_loaded": true,
@@ -188,39 +187,30 @@ docker pull 3067094mu/credit_default_model:latest
 docker run -d -p 5000:5000 3067094mu/credit_default_model:latest
 ```
 
-Демонстрация
+## Демонстрация
 Скриншот работы API:
-https://healthpredict.JPG
+(https://github.com/QuanntumQueen/ImplementationML/blob/main/healthpredict.JPG)
 
-Результаты:
+## Результаты:
 GET /health → сервис работает, модель v2 загружена
 POST /predict → получен корректный прогноз
 
-Архитектура: монолит vs микросервисы
+### Архитектура: монолит vs микросервисы
 В рамках данного учебного проекта выбран монолитный подход.
 Причины:
+- минимальная сложность для MVP;
+- быстрее разработка и деплой;
+- меньше операционных накладных расходов;
+- достаточно для одного ML use-case.
 
-минимальная сложность для MVP;
-
-быстрее разработка и деплой;
-
-меньше операционных накладных расходов;
-
-достаточно для одного ML use-case.
-
-Переход к микросервисной архитектуре будет оправдан при росте нагрузки, появлении нескольких моделей, разных SLA и необходимости независимого масштабирования компонентов.
-
-Логирование, мониторинг и MLOps-концепты
-RabbitMQ (концепт)
+## Логирование, мониторинг и MLOps-концепты
+### RabbitMQ (концепт)
 В production-сценарии RabbitMQ можно использовать для:
+- асинхронного batch scoring;
+- retraining jobs;
+- логирования и доставки событий в очередь.
 
-асинхронного batch scoring;
-
-retraining jobs;
-
-логирования и доставки событий в очередь.
-
-Логирование
+### Логирование
 API-запросы логируются в logs/api_logs.json в JSON-формате:
 
 json
