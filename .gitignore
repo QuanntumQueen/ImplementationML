@@ -14,8 +14,8 @@ __pycache__/
 .idea/
 
 # Logs
-logs/
-*.log
+# logs/
+# *.log
 
 # OS
 .DS_Store
