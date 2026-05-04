@@ -56,7 +56,7 @@ CREDIT-CARD-ML-DEPLOYMENT/
 | Версия | Признаки | Особенности | F1-score | Recall |
 |--------|----------|-------------|----------|--------|
 | **v1** | 23 признака | Базовая модель | 0.4592 | 0.3519 |
-| **v2** | 9 признаков + feature engineering | `class_weight='balanced'` | 0.5310 | 0.5607 |
+| **v2** | 9 признаков( вкл.feature engineering) | `class_weight='balanced'` | 0.5310 | 0.5607 |
 
 ### Feature Engineering (новые признаки)
 - `DELAY_COUNT` — сколько месяцев была просрочка у клиента
