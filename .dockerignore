@@ -1,0 +1,11 @@
+.venv/
+venv/
+.git/
+.gitignore
+README.md
+ab_test_plan.md
+.vscode/
+notebooks/
+logs/
+*.log
+*.md
