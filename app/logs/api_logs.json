@@ -1,0 +1,6 @@
+{"timestamp": "2026-05-04T17:52:58.146531", "features": [0, 0, 0, 0, 0.05, 0.2, 0, 35, 140000], "prediction": 0, "probability": 0.14715812285896512, "status": "success", "model_version": "v2"}
+{"timestamp": "2026-05-04T17:53:00.184752", "features": [1, 2, 3], "prediction": null, "probability": null, "status": "error", "model_version": "v2", "error": "Expected 9 features, got 3"}
+{"timestamp": "2026-05-04T17:53:04.244740", "features": null, "prediction": null, "probability": null, "status": "error", "model_version": "v2", "error": "Missing features"}
+{"timestamp": "2026-05-04T15:53:24.532452", "features": [0, 0, 0, 0, 0.05, 0.2, 0, 35, 140000], "prediction": 0, "probability": 0.14715812285896512, "status": "success", "model_version": "v2"}
+{"timestamp": "2026-05-04T15:53:24.558559", "features": [1, 2, 3], "prediction": null, "probability": null, "status": "error", "model_version": "v2", "error": "Expected 9 features, got 3"}
+{"timestamp": "2026-05-04T15:53:24.580473", "features": null, "prediction": null, "probability": null, "status": "error", "model_version": "v2", "error": "Missing features"}
