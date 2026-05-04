@@ -19,7 +19,7 @@ Production-like - сервис для прогнозирования дефол�
 ```text
 CREDIT-CARD-ML-DEPLOYMENT/
 ├── app/
-│ ├── __ini__t.py
+│ ├── __init__.py
 │ ├── api.py
 │ └── model_handler.py
 ├── data/
@@ -60,7 +60,7 @@ CREDIT-CARD-ML-DEPLOYMENT/
 
 ### Feature Engineering (новые признаки)
 - `DELAY_COUNT` — сколько месяцев была просрочка у клиента
-- `PAYMENT_RATIO` —  PAYMENT_RATIO — платёж / лимит -какую часть лимита клиент платит
+- `PAYMENT_RATIO` — платёж / лимит -какую часть лимита клиент платит
 - `BILL_TO_LIMIT` — долг / лимит -какую часть лимита должен
 - `ZERO_PAYMENT_COUNT` — сколько месяцев не платил клиент
 
@@ -124,7 +124,7 @@ Invoke-RestMethod `
   -Method POST `
   -ContentType "application/json" `
   -Body '{"features": [0, 0, 0, 0, 0.05, 0.2, 0, 35, 140000]}' `
-  ConvertTo-Json
+  | ConvertTo-Json
 ```
 Пример ответа:
 ```json
@@ -238,7 +238,7 @@ ONNX-ML
 uWSGI + NGINX
 В production среде:
 - uWSGI / Gunicorn выступает как WSGI-сервер для Python-приложения;
-- тNGINX работает как reverse proxy, распределяет запросы, обрабатывает TLS, статику и балансировку нагрузки.
+- NGINX работает как reverse proxy, распределяет запросы, обрабатывает TLS, статику и балансировку нагрузки.
 
 ### Бизнес-метрики
 Помимо технических метрик (F1-score, Precision, Recall) используются бизнес-метрики:
