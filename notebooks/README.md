@@ -169,7 +169,7 @@ docker run --rm -p 5000:5000 credit_default_model:latest
 ```
 ## Docker Compose
 Запуск:
-``bash
+```bash
 docker-compose up --build
 ```
 Остановка:
@@ -194,7 +194,6 @@ https://healthpredict.JPG
 
 Результаты:
 GET /health → сервис работает, модель v2 загружена
-
 POST /predict → получен корректный прогноз
 
 Архитектура: монолит vs микросервисы
